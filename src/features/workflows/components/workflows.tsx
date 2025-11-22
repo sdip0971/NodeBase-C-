@@ -19,8 +19,8 @@ function WorkflowList() {
 export default WorkflowList;
 export const WorkflowHeader = ({disabled} : {disabled?:boolean})=>{
   const createWorkflow = useCreateWorkflows()
-  const handleCreate = async () =>{
-    const mutation = await createWorkflow
+  const handleCreate = () =>{
+    const mutation = createWorkflow
     mutation.mutate(undefined, {
       onError : (error)=>{
         console.log(error)

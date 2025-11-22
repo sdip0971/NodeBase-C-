@@ -11,7 +11,7 @@ const useSuspenseWorkFlows = ()=>{
 return useSuspenseQuery(trpc.workflows.getMany.queryOptions());
 }
 export default useSuspenseWorkFlows
-export const useCreateWorkflows = async()=>{
+export const useCreateWorkflows = ()=>{
 const router = useRouter()
 const queryClient = useQueryClient()
 const trpc = useTRPC()

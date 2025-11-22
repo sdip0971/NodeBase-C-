@@ -1,8 +1,8 @@
-import {checkout,polar,portal} from "@polar-sh/better-auth"
+// import {checkout,polar,portal} from "@polar-sh/better-auth"
 import { betterAuth, check } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./db";
-import { polarClient } from "./polar";
+// import { polarClient } from "./polar";
 // If your Prisma file is located elsewhere, you can change the path
 import { PrismaClient } from "@/generated/prisma/client";
 import { TruckElectric } from "lucide-react";
