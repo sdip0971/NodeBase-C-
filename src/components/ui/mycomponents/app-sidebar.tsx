@@ -1,5 +1,5 @@
 "use client"
-import { useHasActiveSubscription} from "@/hooks/use-subscription"
+// import { useHasActiveSubscription} from "@/hooks/use-subscription"
 import {
     CreditCardIcon,
     LogOutIcon,
@@ -50,7 +50,7 @@ const menuitems = [
   }
 ];
 function AppSidebar() {
-  const {HasActiveSubscription,isLoading} =useHasActiveSubscription()
+  // const {HasActiveSubscription,isLoading} =useHasActiveSubscription()
     const router =useRouter()
     const pathname = usePathname();
   return (
@@ -102,20 +102,20 @@ function AppSidebar() {
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu>
-            {!HasActiveSubscription && !isLoading && (
+            {/* {!HasActiveSubscription && !isLoading && ( */}
               <SidebarMenuButton
                 tooltip="Upgrade to Pro"
                 className="gap-x-4 h-10 px-4"
-                onClick={() => {
-                  authClient.checkout({
-                    slug: "pro",
-                  });
-                }}
+                // onClick={() => {
+                //   authClient.checkout({
+                //     slug: "pro",
+                //   });
+                // }}
               >
                 <CreditCardIcon className="h-4 w-4" />
                 <span>Upgrage to Pro</span>
               </SidebarMenuButton>
-            )}
+            {/* )} */}
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip="Billing Portal"
