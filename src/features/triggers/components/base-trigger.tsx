@@ -2,11 +2,11 @@
 import React, { ReactNode } from 'react'
 import { NodeProps,Position } from '@xyflow/react'
 import Image from 'next/image'
-import { BaseNode,BaseNodeContent } from '../react-flow/base-node'
+import { BaseNode,BaseNodeContent } from '@/components/ui/react-flow/base-node'
 import { BaseHandle } from "@/components/ui/react-flow/base-handle";
-import { WorkflowNode } from './workflow-node'
+import { WorkflowNode } from '@/components/ui/mycomponents/workflow-node'
 import { LucideIcon } from 'lucide-react'
-interface BaseExecutionNodeProp extends NodeProps {
+interface BaseTriggerNodeProp extends NodeProps {
   name: string;
   description?: string;
   onSettings?: () => void;
@@ -14,7 +14,7 @@ interface BaseExecutionNodeProp extends NodeProps {
   children?: ReactNode;
   icon : LucideIcon | string
 }
-function BaseExecutionNode({id,name,description,children,icon:Icon,onSettings,onDoubleClick}:BaseExecutionNodeProp) {
+function BaseTriggerNode({id,name,description,children,icon:Icon,onSettings,onDoubleClick}:BaseTriggerNodeProp) {
   const handleDelete = ()=>{
 
   }
@@ -25,7 +25,7 @@ function BaseExecutionNode({id,name,description,children,icon:Icon,onSettings,on
         description={description}
         onSettings={onSettings}
       >
-        <BaseNode onDoubleClick={onDoubleClick}>
+        <BaseNode className='rounded-l-2xl relative group'onDoubleClick={onDoubleClick}>
           <BaseNodeContent>
             <div className="flex items-center justify-center w-8 h-8">
               {typeof Icon === "string" ? (
@@ -40,7 +40,7 @@ function BaseExecutionNode({id,name,description,children,icon:Icon,onSettings,on
                 <Icon className="size-6 text-muted-foreground" />
               )}
               {children}
-              <BaseHandle id="target1" type="target" position={Position.Left} />
+
               <BaseHandle id="source1" type="source" position={Position.Right} />
             </div>
           </BaseNodeContent>
@@ -50,4 +50,4 @@ function BaseExecutionNode({id,name,description,children,icon:Icon,onSettings,on
   );
 }
 
-export default BaseExecutionNode
+export default BaseTriggerNode

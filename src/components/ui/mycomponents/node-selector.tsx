@@ -53,7 +53,7 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp)
         // check if trying to add a manual trigger that already exists
         if(selection.type === NodeType.MANUAL_TRIGGER){
             const nodes = getNodes();
-            const hasmanualTrigger = nodes.some((node)=>{ node.type === NodeType.MANUAL_TRIGGER })
+            const hasmanualTrigger = nodes.some((node)=>{ return node.type === NodeType.MANUAL_TRIGGER })
             if(hasmanualTrigger){
                 toast.error("Manual Trigger node already exists");
                 return;
@@ -63,19 +63,24 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp)
                 const hasIntialTrigger = nodes.some(
                     (node)=> node.type === NodeType.INITIAl
                 )
+                //check if no node yet we are creating node from intial placeholder
 
                 const centerX = window.innerWidth/2;
                  const centerY = window.innerHeight / 2;
+                 // screen to flow postion is used to convert screen cordinates to react flow cordinates supported by react flow canvas
                  const flowPosition = screenToFlowPosition({
                     x: centerX + (Math.random() -0.5) * 200,
                     y: centerY + (Math.random() -0.5) * 200, 
                  })
+                 
+                //now we create new node
                    const newNode = {
                      id: createId(),
                      type:selection.type,
                      position: flowPosition,
                      data: {},
                    };
+                   
                 if( hasIntialTrigger ) return [newNode]
                 return [...nodes,newNode]
             });
