@@ -24,12 +24,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorView,LoadingView } from "@/components/ui/mycomponents/entity-components";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import useSuspenseWorkFlows, { useSuspenseIndividualWorkFlow, useUpdateWorkflows } from "@/hooks/use-workflows";
+import useSuspenseWorkFlows, { useSuspenseIndividualWorkFlow, useUpdateWorkflow, useUpdateWorkflows } from "@/hooks/use-workflows";
 import {  SaveIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect , useRef , useState } from "react";
 import { nodeComponents } from "@/config/node-components";
 import { AddNodeButton } from "./add-node-button";
+import { useAtomValue, useSetAtom } from "jotai";
+import { editorAtom } from "../store/atoms";
 
 
 
@@ -47,6 +49,7 @@ const initialNodes = [
 ];
 const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
 export const Editor = ({ workflowId }: { workflowId: string }) => {
+  const setEditor = useSetAtom(editorAtom)
 
   const { data: workflow } = useSuspenseIndividualWorkFlow(workflowId);
     const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
@@ -63,7 +66,7 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
       (connection:Connection) => setEdges((eds) => addEdge(connection, eds)),
       [setEdges]
     );
- 
+
   return (
     <div className="  size-full">
       <ReactFlow
@@ -72,26 +75,53 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onInit={setEditor}
         proOptions={{
           hideAttribution: true,
         }}
         nodeTypes = {nodeComponents}
         fitView
+        snapGrid={[10,10]}
+        snapToGrid
+        panOnScroll
+        panOnDrag={false}
+        selectionOnDrag
       >
+            
+{/* //     How it works at runtime: */}
+
+{/* // React Flow sees a node object: { type: "HTTP_REQUEST", ... }. */}
+{/* 
+// It looks at nodeTypes prop.
+// It finds the key "HTTP_REQUEST".
+// It grabs the value HttpRequestNode from /config/node-components.ts
+// It renders <HttpRequestNode />. */}
+ 
         <Background />
         <Controls />
         <MiniMap />
         <Panel>
-          <AddNodeButton/>  //using panel we can add our custom components in reactflow canvas
+          <AddNodeButton/>  
+          {/* using panel we can add our custom components in reactflow canvas */}
         </Panel>
       </ReactFlow>
     </div>
   );
 };
 export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
+  const editor = useAtomValue(editorAtom)
+  const saveWorkflow = useUpdateWorkflow()
+  const handleSave = async ()=>{
+    if(!editor) return
+    const nodes = editor.getNodes()
+    const edges = editor.getEdges()
+    saveWorkflow.mutate({id:workflowId,
+      nodes,edges
+    })
+  }
   return (
     <div className="ml-auto">
-      <Button size="sm" onClick={() => {}} disabled={false}>
+      <Button size="sm" onClick={handleSave} disabled={saveWorkflow.isPending}>
         <SaveIcon className="size-4" />
         Save
       </Button>
