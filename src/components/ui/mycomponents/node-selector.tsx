@@ -46,7 +46,7 @@ interface NodeSelectorProp{
     open:boolean,
     onOpenChange:(open:boolean)=>void,
     children?:React.ReactNode,
-} 
+}    
 export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp) {
     const {setNodes,getNodes,screenToFlowPosition} = useReactFlow();
     const handleNodeSelect = useCallback((selection:NodeTypeOption)=>{
@@ -58,13 +58,14 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp)
                 toast.error("Manual Trigger node already exists");
                 return;
             }
+          }
           
             setNodes((nodes)=> {
                 const hasIntialTrigger = nodes.some(
                     (node)=> node.type === NodeType.INITIAl
                 )
                 //check if no node yet we are creating node from intial placeholder
-
+                
                 const centerX = window.innerWidth/2;
                  const centerY = window.innerHeight / 2;
                  // screen to flow postion is used to convert screen cordinates to react flow cordinates supported by react flow canvas
@@ -74,21 +75,18 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp)
                  })
                  
                 //now we create new node
-                   const newNode = {
+                   const newNode = { 
                      id: createId(),
                      type:selection.type,
                      position: flowPosition,
                      data: {},
                    };
                    
-                if( hasIntialTrigger ) return [newNode]
+                if( hasIntialTrigger ){ return [newNode] }
                 return [...nodes,newNode]
             });
             toast.success("Manual Trigger node added");
             onOpenChange(false);
-        }else{
-            toast.error("Node type not implemented yet");
-        }
     },[getNodes,screenToFlowPosition,setNodes,onOpenChange]);
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -137,7 +135,7 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp)
             );
           })}
         </div>
-        <Separator/>
+      
         <div>
           {executionNodes.map((nodeType) => {
             const IconComponent = nodeType.icon as any;
@@ -149,7 +147,7 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProp)
                 rounded-none cursor-pointer border-l-2 border-transparent
                 hover:border-l-primary
               "
-                onClick={() => {}}
+                onClick={() => {handleNodeSelect(nodeType);}}
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
                   {typeof nodeType.icon === "string" ? (
